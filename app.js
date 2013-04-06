@@ -17,6 +17,8 @@ app.configure('production', function(){
     app.use(express.errorHandler());
 });
 
+//var io = require('socket.io').listen(3001);
+
 // Configuration
 app.configure(function(){
     app.set('views', __dirname + '/views');
@@ -28,7 +30,11 @@ app.configure(function(){
     app.use(express.methodOverride());
 
 	app.use(express.cookieParser('your secret here'));
-    app.use(express.session());
+    app.use(express.session({
+        secret: "skjghskdjfhbqigohqdiouk"
+    }));
+
+    //app.use(io);
 
     app.use(app.router);
 
