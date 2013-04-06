@@ -1,8 +1,24 @@
 extend ../layout
 
 block content
-    h1 Hallo Welt
-
-    //a.btn.btn-primary(href="/login") Login
+    form#tweeting(post="/tweet")
+        .modal.hide.fade#myModal
+            .modal-header
+                button.close(type="button", data-dismiss="modal") x
+                h3#myModalLabel Compose a new tweet
+            .modal-body
+                textarea#tweet(name="tweet", style="width: 100%;")
+            .modal-footer
+                button.btn(data-dismiss="modal") Close
+                input.btn.btn-primary(type="submit") Tweet
 
     ul#stream
+        each tweet in tweets
+            li(id=tweet.id)
+                .media
+                    a.pull-left(href="#")
+                        img.media-object(src=tweet.user.profile_image_url, data-src="holder.js/64x64")
+                    .media-body
+                        h4.media-heading @
+                            = tweet.user.screen_name
+                        p= tweet.text
