@@ -9,6 +9,13 @@ var app = express();
 // Express settings
 app.disable('x-powered-by');
 
+app.configure('development', function(){
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function(){
+    app.use(express.errorHandler());
+});
 
 // Configuration
 app.configure(function(){
@@ -26,14 +33,6 @@ app.configure(function(){
     app.use(app.router);
 
     app.use(express.static(path.join(__dirname, 'public')));
-});
-
-app.configure('development', function(){
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
-    app.use(express.errorHandler());
 });
 
 mongoose.connect(config.db.url);
