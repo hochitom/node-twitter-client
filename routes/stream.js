@@ -65,6 +65,9 @@ module.exports = function(app) {
     });
 
     app.post('/tweet', function(req, res) {
+        var access_token = req.session.oAuthVars.oauth_access_token,
+            access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
+
         var twit = new twitter({
             consumer_key: config.twitteroAuth.key,
             consumer_secret: config.twitteroAuth.secret,
@@ -72,13 +75,39 @@ module.exports = function(app) {
             access_token_secret: access_token_secret
         });
 
+        var params = '?in_reply_to_status_id='+parseFloat(req.body.in_reply_to_status_id)+'&lat=47.504444444444&long=15.448888888889565';
+
         twit
             .verifyCredentials(function (err, data) {
                 console.log(data);
-            }).updateStatus(req.body.msg, function (err, data) {
+            }).updateStatus(req.body.msg, {in_reply_to_status_id: parseFloat(req.body.in_reply_to_status_id)}, function (err, data) {
                 if (err) {
                     console.error(err);
                     res.send(415);
+                } else {
+                    res.send(200);
+                    console.log(data);
+                }
+            });
+    });
+
+    app.post('/retweet', function(req, res) {
+        var access_token = req.session.oAuthVars.oauth_access_token,
+            access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
+
+        var twit = new twitter({
+            consumer_key: config.twitteroAuth.key,
+            consumer_secret: config.twitteroAuth.secret,
+            access_token_key: access_token,
+            access_token_secret: access_token_secret
+        });
+
+        console.log(req.body.id);
+
+        twit.retweetStatus(req.body.id, function (err, data) {
+                if (err) {
+                    console.error(err);
+                    res.send(404);
                 }
                 console.log(data);
             });

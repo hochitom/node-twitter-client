@@ -8,6 +8,7 @@ block content
                 h3#myModalLabel Compose a new tweet
             .modal-body
                 textarea#tweet(name="tweet", style="width: 100%;")
+                input(type="hidden", name="reply_to", id="reply_to")
             .modal-footer
                 button.btn(data-dismiss="modal") Close
                 input.btn.btn-primary(type="submit") Tweet
@@ -19,6 +20,10 @@ block content
                     a.pull-left(href="#")
                         img.media-object(src=tweet.user.profile_image_url, data-src="holder.js/64x64")
                     .media-body
-                        h4.media-heading @
+                        h4.media-heading.username @
                             = tweet.user.screen_name
                         p= tweet.text
+                    .media-footer
+                        .btn-group
+                            a.btn.reply(href="#", onclick="javascript:reply(" + tweet.id +");", data-id=tweet.id) Reply
+                            a.btn.retweet(href="#", onclick="javascript:retweet(" + tweet.id +");", data-id=tweet.id) Retweet
