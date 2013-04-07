@@ -29,9 +29,12 @@ app.configure(function(){
     app.use(express.bodyParser());
     app.use(express.methodOverride());
 
-	app.use(express.cookieParser('your secret here'));
+	app.use(express.cookieParser());
     app.use(express.session({
-        secret: "skjghskdjfhbqigohqdiouk"
+        secret: "skjghskdjfhbqigohqdiouk",
+        cookie: {
+            maxAge: 3600 * 60 * 60
+        }
     }));
 
     //app.use(io);
