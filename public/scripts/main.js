@@ -20,6 +20,15 @@ socket.on('tweet', function (msg) {
         template += '</div></div></div></li>';
 
     $('#stream').prepend(template);
+
+    var item_height = $('#stream').find('li').eq(0).height();
+
+    // update position
+    position += item_height;
+
+    $('html, body').css({
+        scrollTop: position + 'px'
+    });
 });
 
 $('#tweeting').on('submit', function(data) {
@@ -47,3 +56,28 @@ function retweet(id) {
         console.log(data);
     });
 }
+
+function findPos(id) {
+    var node = document.getElementById(id);     
+    var curtop = 0;
+    var curtopscroll = 0;
+    if (node.offsetParent) {
+        do {
+            curtop += node.offsetTop;
+            curtopscroll += node.offsetParent ? node.offsetParent.scrollTop : 0;
+        } while (node = node.offsetParent);
+
+        return (curtop - curtopscroll);
+    }
+    return false;
+}
+
+/* fix tweet */
+var last_read = $('#stream').find('li').eq(0).attr('id');
+var position = findPos(last_read);
+
+$('#stream').on('click', 'li', function(){
+    last_read = parseFloat($(this).attr('id'));
+});
+
+console.log(last_read);
