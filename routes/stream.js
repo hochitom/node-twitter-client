@@ -68,48 +68,49 @@ module.exports = function(app) {
         var access_token = req.session.oAuthVars.oauth_access_token,
             access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
 
-        var twit = new twitter({
-            consumer_key: config.twitteroAuth.key,
-            consumer_secret: config.twitteroAuth.secret,
-            access_token_key: access_token,
-            access_token_secret: access_token_secret
+        oa = new OAuth(
+            "https://twitter.com/oauth/request_token",
+            "https://twitter.com/oauth/access_token", 
+            config.twitteroAuth.key,
+            config.twitteroAuth.secret, 
+            "1.0A",
+            "http://localhost:3000/",
+            "HMAC-SHA1"
+        );
+
+        oa.post('http://api.twitter.com/1/statuses/update.json', access_token, access_token_secret, {status: req.body.msg, in_reply_to_status_id: parseFloat(req.body.in_reply_to_status_id)}, function(err, data){
+            if (err) {
+                console.error(err);
+                res.send(503);
+            }
+            console.log(data);
+            res.send(200);
         });
-
-        var params = '?in_reply_to_status_id='+parseFloat(req.body.in_reply_to_status_id)+'&lat=47.504444444444&long=15.448888888889565';
-
-        twit
-            .verifyCredentials(function (err, data) {
-                console.log(data);
-            }).updateStatus(req.body.msg, {in_reply_to_status_id: parseFloat(req.body.in_reply_to_status_id)}, function (err, data) {
-                if (err) {
-                    console.error(err);
-                    res.send(415);
-                } else {
-                    res.send(200);
-                    console.log(data);
-                }
-            });
     });
 
     app.post('/retweet', function(req, res) {
         var access_token = req.session.oAuthVars.oauth_access_token,
             access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
 
-        var twit = new twitter({
-            consumer_key: config.twitteroAuth.key,
-            consumer_secret: config.twitteroAuth.secret,
-            access_token_key: access_token,
-            access_token_secret: access_token_secret
+        oa = new OAuth(
+            "https://twitter.com/oauth/request_token",
+            "https://twitter.com/oauth/access_token", 
+            config.twitteroAuth.key,
+            config.twitteroAuth.secret, 
+            "1.0A",
+            "http://localhost:3000/",
+            "HMAC-SHA1"
+        );
+
+        console.log('https://api.twitter.com/1.1/statuses/retweet/' + parseFloat(req.body.id) + '.json');
+        oa.post('https://api.twitter.com/1.1/statuses/retweet/' + parseFloat(req.body.id) + '.json', access_token, access_token_secret, {id: parseFloat(req.body.id)}, function(err, data) {
+            if (err) {
+                console.error(err);
+                res.send(503);
+                res.end();
+            }
+            console.log(data);
+            res.send(200);
         });
-
-        console.log(req.body.id);
-
-        twit.retweetStatus(req.body.id, function (err, data) {
-                if (err) {
-                    console.error(err);
-                    res.send(404);
-                }
-                console.log(data);
-            });
     });
 }

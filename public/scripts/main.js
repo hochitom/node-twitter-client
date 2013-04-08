@@ -23,34 +23,26 @@ socket.on('tweet', function (msg) {
 });
 
 $('#tweeting').on('submit', function(data) {
-    console.log($('#reply_to').val());
-    console.log($('#tweet').val());
     $.post('/tweet', {msg: $('#tweet').val(), in_reply_to_status_id: $('#reply_to').val()}, function(data){
         console.log(data);
 
         if (data === 'OK') {
             $('#myModal').modal('hide');
+            $('#reply_to').val('');
+            $('#tweet').val('');
         }
     });
     return false;
 });
 
-$('a').on('click', '.retweet', function(e) {
-    e.preventDefault();
-    console.log('retweet tweet #' + $(this).attr('data-id'));
-    $.post('/retweet', {id: $(this).attr('data-id')}, function(data) {
-        console.log(data);
-    });
-});
-
 function reply(id) {
     $('#myModal').modal('show');
     $('#reply_to').val(id);
-    $('#tweet').text($('li#'+id).find('.username').text());
+    $('#tweet').text($('li#'+id).find('.username').text() + ' ');
 }
 
 function retweet(id) {
-    console.log('retweet tweet #' + id);
+    console.log('1');
     $.post('/retweet', {id: id}, function(data) {
         console.log(data);
     });
