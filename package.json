@@ -10,7 +10,7 @@
     "mongoose": "3.5.x",
     "oauth": "0.9.x",
     "ntwitter": "*",
-    "socket.io": "0.9.*"
+    "socket.io": "0.9.x"
   },
   "devDependencies": {
     "mocha": "*"
