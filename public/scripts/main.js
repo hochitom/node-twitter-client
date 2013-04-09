@@ -11,12 +11,12 @@ socket.on('tweet', function (msg) {
         template += '<img class="media-object" src="' + msg.user.profile_image_url +'" data-src="holder.js/64x64">';
         template += '</a>';
         template += '<div class="media-body">';
-        template += '<h4 class="media-heading">@' + msg.user.screen_name + '</h4>';
+        template += '<h4 class="media-heading username">@' + msg.user.screen_name + '</h4>';
         template += '<p>' + msg.text + '</p>';
         template += '</div>';
         template += '<div class="media-footer"><div class="btn-group">';
-        template += '<a class="btn reply" href="#" onclick="javascript:reply(' + msg.id +');">Reply</a>';
-        template += '<a class="btn retweet" href="#" onclick="javascript:retweet(' + msg.id +');">Retweet</a>';
+        template += '<a class="btn reply" href="#" data-id="' + msg.id + '">Reply</a>';
+        template += '<a class="btn retweet" href="#" data-id="' + msg.id + '">Retweet</a>';
         template += '</div></div></div></li>';
 
     $('#stream').prepend(template);
@@ -44,19 +44,6 @@ $('#tweeting').on('submit', function(data) {
     return false;
 });
 
-function reply(id) {
-    $('#myModal').modal('show');
-    $('#reply_to').val(id);
-    $('#tweet').text($('li#'+id).find('.username').text() + ' ');
-}
-
-function retweet(id) {
-    console.log('1');
-    $.post('/retweet', {id: id}, function(data) {
-        console.log(data);
-    });
-}
-
 function findPos(id) {
     var node = document.getElementById(id);     
     var curtop = 0;
@@ -76,8 +63,23 @@ function findPos(id) {
 var last_read = $('#stream').find('li').eq(0).attr('id');
 var position = findPos(last_read);
 
-$('#stream').on('click', 'li', function(){
-    last_read = parseFloat($(this).attr('id'));
-});
+$('#stream')
+    .on('click', 'li', function(){
+        last_read = parseFloat($(this).attr('id'));
+    })
+    .on('click', '.reply', function(e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id');
+        $('#myModal').modal('show');
+        $('#reply_to').val(id);
+        $('#tweet').text($('li#'+id).find('.username').text() + ' ');
+    })
+    .on('click', '.retweet', function(e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id');
+        $.post('/retweet', {id: id}, function(data) {
+            console.log(data);
+        });
+    });
 
 console.log(last_read);

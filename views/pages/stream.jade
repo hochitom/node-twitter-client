@@ -25,5 +25,5 @@ block content
                         p= tweet.text
                     .media-footer
                         .btn-group
-                            a.btn.reply(href="#", onclick="javascript:reply(" + tweet.id +");", data-id=tweet.id) Reply
-                            a.btn.retweet(href="#", onclick="javascript:retweet(" + tweet.id +");", data-id=tweet.id) Retweet
+                            a.btn.reply(href="#", data-id=tweet.id) Reply
+                            a.btn.retweet(href="#", data-id=tweet.id) Retweet
