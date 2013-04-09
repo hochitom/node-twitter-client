@@ -15,7 +15,9 @@
     color: #B94A48;
 }
 
-#stream {margin: 0;}
+#stream {
+    margin: 80px 0 0 0;
+}
 #tweeting {margin: 0;}
 
 #stream li {
@@ -30,4 +32,15 @@
 
 .media a.pull-left img {
     max-width: 100%;
+}
+
+.masthead {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: rgba(255,255,255,.9);
+    border-bottom: 1px solid rgb(236,236,236);
+    z-index: 1;
 }
