@@ -15,8 +15,9 @@ socket.on('tweet', function (msg) {
         template += '<p>' + msg.text + '</p>';
         template += '</div>';
         template += '<div class="media-footer"><div class="btn-group">';
-        template += '<a class="btn reply" href="#" data-id="' + msg.id + '">Reply</a>';
-        template += '<a class="btn retweet" href="#" data-id="' + msg.id + '">Retweet</a>';
+        template += '<a class="btn reply" href="#" data-id="' + msg.id + '"><i class="icon-share-alt"></i></a>';
+        template += '<a class="btn fav" href="#" data-id="' + msg.id + '"><i class="icon-star-empty"></i></a>';
+        template += '<a class="btn retweet" href="#" data-id="' + msg.id + '"><i class="icon-retweet"></i></a>';
         template += '</div></div></div></li>';
 
     $('#stream').prepend(template);
@@ -78,6 +79,14 @@ $('#stream')
         e.preventDefault();
         var id = $(this).attr('data-id');
         $.post('/retweet', {id: id}, function(data) {
+            console.log(data);
+        });
+    })
+    .on('click', '.fav', function(e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id');
+        
+        $.post('/fav', {id: id}, function(data) {
             console.log(data);
         });
     });
