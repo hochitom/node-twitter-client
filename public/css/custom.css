@@ -25,6 +25,10 @@
     padding-top: 10px;
 }
 
+#stream li:first-child {
+    border-top: 0;
+}
+
 .media a.pull-left {
     width: 48px;
     height: 48px;
@@ -41,6 +45,16 @@
     right: 0;
     padding: 10px;
     background: rgba(255,255,255,.9);
-    border-bottom: 1px solid rgb(236,236,236);
+    border-bottom: 1px solid #efefef;
     z-index: 1;
+}
+
+.masthead h3 {
+    margin: 13px 0;
+    line-height: 1;
+    font-size: 24px;
+}
+
+.masthead .btn {
+    margin: 10px 0;
 }
