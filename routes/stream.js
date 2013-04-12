@@ -68,7 +68,7 @@ module.exports = function(app) {
             access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
 
         oa = auth();
-        oa.post('http://api.twitter.com/1/statuses/update.json', access_token, access_token_secret, {status: req.body.msg, in_reply_to_status_id: parseFloat(req.body.in_reply_to_status_id)}, function(err, data){
+        oa.post('https://api.twitter.com/1.1/statuses/update.json', access_token, access_token_secret, {status: req.body.msg, in_reply_to_status_id: parseFloat(req.body.in_reply_to_status_id)}, function(err, data){
             if (err) {
                 console.error(err);
                 res.send(503);
@@ -83,7 +83,6 @@ module.exports = function(app) {
             access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
 
         oa = auth();
-        console.log('https://api.twitter.com/1.1/statuses/retweet/' + parseFloat(req.body.id) + '.json');
         oa.post('https://api.twitter.com/1.1/statuses/retweet/' + parseFloat(req.body.id) + '.json', access_token, access_token_secret, {id: parseFloat(req.body.id)}, function(err, data) {
             if (err) {
                 console.error(err);
@@ -99,8 +98,14 @@ module.exports = function(app) {
         var access_token = req.session.oAuthVars.oauth_access_token,
             access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
 
+        var params = {
+            id: req.body.id
+        }
+
+        console.log(req.body.id);
         oa = auth();
-        oa.post('https://api.twitter.com/1.1/favorites/create.json', access_token, access_token_secret, {id: parseFloat(req.body.id)}, function(err, data) {
+        console.log(oa);
+        oa.post('https://api.twitter.com/1.1/favorites/create.json', access_token, access_token_secret, params, function(err, data) {
             if (err) {
                 console.error(err);
                 res.send(err.statusCode);

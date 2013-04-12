@@ -22,14 +22,12 @@ socket.on('tweet', function (msg) {
 
     $('#stream').prepend(template);
 
-    var item_height = $('#stream').find('li').eq(0).height();
-
+    /*var item_height = $('#stream').find('li').eq(0).height();
     // update position
     position += item_height;
-
     $('html, body').css({
         scrollTop: position + 'px'
-    });
+    });*/
 });
 
 $('#tweeting').on('submit', function(data) {
@@ -38,8 +36,8 @@ $('#tweeting').on('submit', function(data) {
 
         if (data === 'OK') {
             $('#myModal').modal('hide');
-            $('#reply_to').val('');
-            $('#tweet').val('');
+            $('#reply_to').empty();
+            $('#tweet').empty();
         }
     });
     return false;
@@ -61,8 +59,8 @@ function findPos(id) {
 }
 
 /* fix tweet */
-var last_read = $('#stream').find('li').eq(0).attr('id');
-var position = findPos(last_read);
+/*var last_read = $('#stream').find('li').eq(0).attr('id');
+var position = findPos(last_read);*/
 
 $('#stream')
     .on('click', 'li', function(){
@@ -85,10 +83,8 @@ $('#stream')
     .on('click', '.fav', function(e) {
         e.preventDefault();
         var id = $(this).attr('data-id');
-        
+
         $.post('/fav', {id: id}, function(data) {
             console.log(data);
         });
     });
-
-console.log(last_read);
