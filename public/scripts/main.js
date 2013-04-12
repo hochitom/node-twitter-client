@@ -3,28 +3,28 @@ var socket = io.connect('http://127.0.0.1:3001');
 socket.on('tweet', function (msg) {
     
     console.log(msg);
-    console.log(msg.entities.urls[0]);
 
     var tweet = msg.text;
 
-    function grabLink(link) {
-        var link = msg.entities.urls[0].display_url;
-        msg.entities.urls.splice(1,1);
+    /*function grabLink(link) {
+        var link;
+
+        if (msg.entities.urls.length > 0) {
+            link = msg.entities.urls[0].display_url;
+            msg.entities.urls.splice(1,1);
+        }
+
         return link;
-    }
+    }*/
 
     var link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    tweet = tweet.replace(link_exp,"<a href='$1' target='_blank'>" + grabLink() +"</a>");
+    tweet = tweet.replace(link_exp,"<a href='$1' target='_blank'>$1</a>");
 
     var hashtag_exp = /#([a-zA-Z0-9]+)/g;
     tweet = tweet.replace(hashtag_exp,"<a href='https://twitter.com/search?q=$1&src=hash' target='_blank'>#$1</a>");
     
     var user_exp = /@([a-zA-Z0-9]+)/g;
     tweet = tweet.replace(user_exp,"<a href='https://twitter.com/$1' target='_blank'>@$1</a>");
-
-    if (msg.entities.urls.length > 0) {
-
-    }
 
     var template = '<li id="' + msg.id + '"><div class="media">';
         template += '<a class="pull-left" href="#">';
@@ -42,12 +42,8 @@ socket.on('tweet', function (msg) {
 
     $('#stream').prepend(template);
 
-    /*var item_height = $('#stream').find('li').eq(0).height();
-    // update position
-    position += item_height;
-    $('html, body').css({
-        scrollTop: position + 'px'
-    });*/
+    var item_height = $('#stream').find('li').eq(0).height();
+    window.scroll(0,item_height + 20);
 });
 
 $('#tweeting').on('submit', function(data) {
@@ -63,24 +59,15 @@ $('#tweeting').on('submit', function(data) {
     return false;
 });
 
-function findPos(id) {
-    var node = document.getElementById(id);     
-    var curtop = 0;
-    var curtopscroll = 0;
-    if (node.offsetParent) {
-        do {
-            curtop += node.offsetTop;
-            curtopscroll += node.offsetParent ? node.offsetParent.scrollTop : 0;
-        } while (node = node.offsetParent);
-
-        return (curtop - curtopscroll);
-    }
-    return false;
-}
-
 /* fix tweet */
-/*var last_read = $('#stream').find('li').eq(0).attr('id');
-var position = findPos(last_read);*/
+var position;
+$(document).ready(function(){
+    position = 0;
+    $(window).scroll(function () {
+        position = $(window).scrollTop();
+        // synch with last read db
+    });
+});
 
 $('#stream')
     .on('click', 'li', function(){
