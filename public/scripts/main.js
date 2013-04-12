@@ -1,22 +1,25 @@
 var socket = io.connect('http://127.0.0.1:3001');
 
-socket.on('connect', function () {
-    
-});
-
 socket.on('tweet', function (msg) {
     
     console.log(msg);
+    console.log(msg.entities.urls[0]);
 
     var tweet = msg.text;
-    console.log(msg.entities.urls);
+
+    function grabLink(link) {
+        var link = msg.entities.urls[0].display_url;
+        msg.entities.urls.splice(1,1);
+        return link;
+    }
 
     var link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    tweet = tweet.replace(link_exp,"<a href='$1' target='_blank'>$1</a>");
+    tweet = tweet.replace(link_exp,"<a href='$1' target='_blank'>" + grabLink() +"</a>");
 
     var hashtag_exp = /#([a-zA-Z0-9]+)/g;
-    var user_exp = /@([a-zA-Z0-9]+)/g;
     tweet = tweet.replace(hashtag_exp,"<a href='https://twitter.com/search?q=$1&src=hash' target='_blank'>#$1</a>");
+    
+    var user_exp = /@([a-zA-Z0-9]+)/g;
     tweet = tweet.replace(user_exp,"<a href='https://twitter.com/$1' target='_blank'>@$1</a>");
 
     if (msg.entities.urls.length > 0) {
