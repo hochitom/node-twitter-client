@@ -33,6 +33,7 @@ module.exports = function(app) {
         twit.stream('user', function(stream, error) {
             if (error) console.error(error);
             stream.on('data', function (data) {
+                console.log(data);
                 req.io.emit('new-tweet', data);
             });
         });

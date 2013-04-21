@@ -13,21 +13,19 @@ block content
                 button.btn(data-dismiss="modal") Close
                 input.btn.btn-primary(type="submit") Tweet
 
-    ul#stream
-        each tweet in tweets
-            li(id=tweet.id)
-                .media
-                    a.pull-left(href="#")
-                        img.media-object(src=tweet.user.profile_image_url, data-src="holder.js/64x64")
-                    .media-body
-                        h4.media-heading.username @
-                            = tweet.user.screen_name
-                        p= tweet.text
-                    .media-footer
-                        .btn-group
-                            a.btn.reply(href="#", data-id=tweet.id)
-                                i.icon-share-alt
-                            a.btn.fav(href="#", data-id=tweet.id)
-                                i.icon-star-empty
-                            a.btn.retweet(href="#", data-id=tweet.id)
-                                i.icon-retweet
+    ul#stream(ng-controller="StreamCtrl")
+        li(ng-repeat="tweet in tweets", id="tweet.id")
+            .media
+                a.pull-left(href="#")
+                    img.media-object(src="tweet.user.profile_image_url", data-src="holder.js/64x64")
+                .media-body
+                    h4.media-heading.username @{{tweet.user.screen_name}}
+                    p {{tweet.text}}
+                .media-footer
+                    .btn-group
+                        a.btn.reply(href="#", data-id="tweet.id")
+                            i.icon-share-alt
+                        a.btn.fav(href="#", data-id="tweet.id")
+                            i.icon-star-empty
+                        a.btn.retweet(href="#", data-id="tweet.id")
+                            i.icon-retweet
