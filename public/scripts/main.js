@@ -46,7 +46,7 @@ socket.on('new-tweet', function (msg) {
 
     var item_height = $('#stream').find('li').eq(0).height();
     position += item_height + 20;
-    window.scroll(0,position);
+    window.scroll(0, position);
 });
 
 $('#tweeting').on('submit', function(data) {
