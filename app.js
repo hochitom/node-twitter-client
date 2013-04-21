@@ -18,7 +18,7 @@ app.configure('production', function(){
     app.use(express.errorHandler());
 });
 
-//var io = require('socket.io').listen(3001);
+app.listen(3001);
 
 // Configuration
 app.configure(function(){
@@ -38,14 +38,10 @@ app.configure(function(){
         }
     }));
 
-    //app.use(io);
-
     app.use(app.router);
 
     app.use(express.static(path.join(__dirname, 'public')));
 });
-
-app.listen(3001)
 
 //mongoose.connect(config.db.url);
 

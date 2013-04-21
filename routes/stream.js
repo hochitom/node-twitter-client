@@ -33,11 +33,9 @@ module.exports = function(app) {
         twit.stream('user', function(stream, error) {
             if (error) console.error(error);
             stream.on('data', function (data) {
-                console.log(data);
-                req.io.broadcast('tweet', data);
+                req.io.emit('new-tweet', data);
             });
         });
-        
     });
     
     app.get('/', function(req, res) {
@@ -48,7 +46,6 @@ module.exports = function(app) {
             res.redirect('/login');
         } else {
             res.render('pages/stream', {tweets: []});
-            req.io.route('tweet');
         }
     });
 

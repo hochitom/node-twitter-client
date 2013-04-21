@@ -1,6 +1,8 @@
 var socket = io.connect('http://127.0.0.1:3001');
 
-socket.on('tweet', function (msg) {
+socket.emit('tweet');
+
+socket.on('new-tweet', function (msg) {
     
     console.log(msg);
 
