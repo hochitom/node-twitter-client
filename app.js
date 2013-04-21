@@ -1,10 +1,11 @@
 var path = require('path'),
-    express = require('express'),
+    express = require('express.io'),
     http = require('http'),
     mongoose = require('mongoose'),
     config = require('./config');
 
 var app = express();
+app.http().io();
 
 // Express settings
 app.disable('x-powered-by');
@@ -43,6 +44,8 @@ app.configure(function(){
 
     app.use(express.static(path.join(__dirname, 'public')));
 });
+
+app.listen(3001)
 
 //mongoose.connect(config.db.url);
 

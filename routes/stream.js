@@ -1,7 +1,6 @@
-var express = require('express'),
+var express = require('express.io'),
     OAuth = require('oauth').OAuth,
     twitter = require('ntwitter'),
-    io = require('socket.io').listen(3001),
     https = require('https'),
     config = require('../config'),
     mapper = require('../lib/model-mapper');
@@ -19,6 +18,28 @@ function auth () {
 }
 
 module.exports = function(app) {
+
+    app.io.route('tweet', function(req) {
+        var access_token = req.session.oAuthVars.oauth_access_token,
+            access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
+
+        var twit = new twitter({
+            consumer_key: config.twitteroAuth.key,
+            consumer_secret: config.twitteroAuth.secret,
+            access_token_key: req.session.oAuthVars.oauth_access_token,
+            access_token_secret: req.session.oAuthVars.oauth_access_token_secret
+        });
+
+        twit.stream('user', function(stream, error) {
+            if (error) console.error(error);
+            stream.on('data', function (data) {
+                console.log(data);
+                req.io.broadcast('tweet', data);
+            });
+        });
+        
+    });
+    
     app.get('/', function(req, res) {
         if (!req.session.oAuthVars ||
             !req.session.oAuthVars.oauth_access_token ||
@@ -26,40 +47,8 @@ module.exports = function(app) {
         {
             res.redirect('/login');
         } else {
-            var access_token = req.session.oAuthVars.oauth_access_token,
-                access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
-
-                console.log(config.twitteroAuth.key);
-                console.log(config.twitteroAuth.secret);
-                console.log(access_token);
-                console.log(access_token_secret);
-
-            var twit = new twitter({
-                consumer_key: config.twitteroAuth.key,
-                consumer_secret: config.twitteroAuth.secret,
-                access_token_key: access_token,
-                access_token_secret: access_token_secret
-            });
-
-            twit.stream('user', function(stream, error) {
-                if (error) console.error(error);
-
-                io.sockets.on('connection', function (socket) {
-                    stream.on('data', function (data) {
-                        socket.emit('tweet', data);
-                    });
-
-                    socket.on('disconnect', function () {
-                        io.sockets.emit('user disconnected');
-                    });
-                });
-            });
-
-            oa = auth();
-            oa.get("http://api.twitter.com/1/statuses/home_timeline.json", access_token, access_token_secret, function(error, data) {
-                console.log(data);
-                res.render('pages/stream', {tweets: JSON.parse(data)});
-            });
+            res.render('pages/stream', {tweets: []});
+            req.io.route('tweet');
         }
     });
 
