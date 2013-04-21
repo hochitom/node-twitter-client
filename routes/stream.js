@@ -50,6 +50,23 @@ module.exports = function(app) {
         }
     });
 
+    app.get('/stream', function(req, res) {
+        if (!req.session.oAuthVars ||
+            !req.session.oAuthVars.oauth_access_token ||
+            !req.session.oAuthVars.oauth_access_token_secret)
+        {
+            res.redirect('/login');
+        } else {
+            var access_token = req.session.oAuthVars.oauth_access_token,
+                access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
+
+            oa = auth();
+            oa.get("http://api.twitter.com/1/statuses/home_timeline.json", access_token, access_token_secret, function(error, data) {
+                res.send(data);
+            });
+        }
+    });
+
     app.post('/tweet', function(req, res) {
         var access_token = req.session.oAuthVars.oauth_access_token,
             access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
