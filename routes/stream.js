@@ -46,7 +46,7 @@ module.exports = function(app) {
         {
             res.redirect('/login');
         } else {
-            res.render('pages/stream', {tweets: []});
+            res.render('pages/stream');
         }
     });
 
@@ -62,6 +62,7 @@ module.exports = function(app) {
 
             oa = auth();
             oa.get("http://api.twitter.com/1/statuses/home_timeline.json", access_token, access_token_secret, function(error, data) {
+                res.setHeader("Content-Type", "text/json");
                 res.send(data);
             });
         }

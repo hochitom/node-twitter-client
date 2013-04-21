@@ -4,14 +4,13 @@
 
         $http
             .get('/stream')
-            .success(function (data) {
-                $scope.tweets = data.parse();
+            .then(function (res) {
+                $scope.tweets = res.data;
             });
 
         $scope.addTweet = function (data) {
-            console.log('data');
             $scope.tweets.push(data);
-            console.log($scope.tweets);
+            console.log($scope.tweets.length);
         };
 
         $rootScope.$on('new-tweet', function (event, data) {
