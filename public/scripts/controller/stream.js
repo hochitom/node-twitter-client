@@ -10,7 +10,7 @@
 
         $scope.addTweet = function (data) {
             $scope.tweets.push(data);
-            console.log($scope.tweets.length);
+            $scope.$apply('tweets');
         };
 
         $rootScope.$on('new-tweet', function (event, data) {
