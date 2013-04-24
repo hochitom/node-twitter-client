@@ -1,7 +1,7 @@
 extend ../layout
 
 block content
-    div(ng-controller="StreamCtrl")
+    div
         form#tweeting(post="/tweet")
             .modal.hide.fade#myModal
                 .modal-header
@@ -15,7 +15,7 @@ block content
                     input.btn.btn-primary(type="submit") Tweet
 
         ul#stream
-            li(ng-repeat="tweet in tweets | orderBy:-created_at")
+            li(ng-repeat="tweet in tweets")
                 .media
                     a.pull-left(href="#")
                         img.media-object(ng-src="{{tweet.user.profile_image_url}}", data-src="holder.js/64x64")
@@ -23,10 +23,11 @@ block content
                         h4.media-heading.username @{{tweet.user.screen_name}}
                         p {{tweet.text}}
                     .media-footer
-                        .btn-group
+                        .btn-group.pull-right
                             a.btn.reply(href="#", data-id="{{tweet.id}}")
                                 i.icon-share-alt
                             a.btn.fav(href="#", data-id="{{tweet.id}}")
                                 i.icon-star-empty
                             a.btn.retweet(href="#", data-id="{{tweet.id}}")
                                 i.icon-retweet
+                        p {{tweet.created_at}}

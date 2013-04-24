@@ -10,16 +10,16 @@ html(ng-app="twitter-client")
     link(rel='stylesheet', href='/css/custom.css')
       
 body
-  .container-fluid
+  .container-fluid(ng-controller="StreamCtrl")
     .masthead
       a.btn.btn-primary.pull-right(href="#myModal", data-toggle="modal") New Tweet
-      h3 Twitter-Stream
+      h3 Twitter-Stream {{tweets.length}}
       
     .row-fluid
       block content
 
   script(src='/vendor/jquery/js/jquery.min.js')
-  script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js")
+  script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js")
   script(src='/vendor/bootstrap/js/bootstrap.js')
   script(src="http://127.0.0.1:3001/socket.io/socket.io.js")
   script
