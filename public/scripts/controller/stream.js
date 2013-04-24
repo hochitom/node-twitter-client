@@ -11,12 +11,7 @@
         $scope.addTweet = function (data) {
             $scope.tweets.push(data);
             $scope.$digest('tweets');
-            console.log($scope.tweets);
         };
-
-        $scope.$watch('tweets', function () {
-            console.log('tt');
-        });
 
         $rootScope.$on('new-tweet', function (event, data) {
             if (data.friends) {

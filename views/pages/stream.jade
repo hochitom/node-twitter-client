@@ -15,13 +15,13 @@ block content
                     input.btn.btn-primary(type="submit") Tweet
 
         ul#stream
-            li(ng-repeat="tweet in tweets")
+            li(ng-repeat="tweet in tweets | orderBy: -tweet.id")
                 .media
                     a.pull-left(href="#")
                         img.media-object(ng-src="{{tweet.user.profile_image_url}}", data-src="holder.js/64x64")
                     .media-body
                         h4.media-heading.username @{{tweet.user.screen_name}}
-                        p {{tweet.text}}
+                        p(ng-bind-html-unsafe="tweet.text")
                     .media-footer
                         .btn-group.pull-right
                             a.btn.reply(href="#", data-id="{{tweet.id}}")
