@@ -21,13 +21,13 @@ block content
                         img.media-object(ng-src="{{tweet.user.profile_image_url}}")
                     .media-body
                         h4.media-heading.username @{{tweet.user.screen_name}}
-                        p(ng-bind-html-unsafe="tweet.text")
+                        p(ng-bind-html-unsafe="tweet.text", ng-pimp-tweet, links="{{tweet.entities.urls.length}}", symbols="{{tweet.entities.symbols.length}}", hashtags="{{tweet.entities.hashtags.length}}", user="{{tweet.entities.user.length}}")
                     .media-footer
                         .btn-group.pull-right
                             a.btn.reply(href="#", data-id="{{tweet.id}}")
                                 i.icon-share-alt
-                            a.btn.fav(href="#", data-id="{{tweet.id}}")
+                            a.btn.fav(href="#", ng-click="fav(tweet.id)")
                                 i.icon-star-empty
-                            a.btn.retweet(href="#", data-id="{{tweet.id}}")
+                            a.btn.retweet(href="#", ng-click="retweet(tweet.id)")
                                 i.icon-retweet
                         p {{tweet.created_at}}

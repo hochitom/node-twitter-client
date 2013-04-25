@@ -22,9 +22,7 @@ body
   script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js")
   script(src='/vendor/bootstrap/js/bootstrap.js')
   script(src="http://127.0.0.1:3001/socket.io/socket.io.js")
-  script
-    var socket = io.connect('http://127.0.0.1:3001');
-    socket.emit('tweet');
   script(src='/scripts/application.js')
   script(src='/scripts/services/stream.js')
+  script(src='/scripts/directives/pimptweets.js')
   script(src='/scripts/controller/stream.js')
