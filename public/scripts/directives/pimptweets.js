@@ -4,7 +4,7 @@
             console.log(scope);
             console.log(elems);
 
-            var tweet = elems[0].innerHTML,
+            var tweet = scope.tweet.text,
                 links = parseFloat(attrs.links),
                 user = parseFloat(attrs.user_mentions),
                 symbols = parseFloat(attrs.symbols),
@@ -15,7 +15,7 @@
             if (links > 0) {
                 console.log('links: ' + links);
                 var link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-                tweet = tweet.replace(link_exp,"<a href='$1' target='_blank'>$1</a>");
+                scope.tweet.text = tweet.replace(link_exp,"<a href='$1' target='_blank'>$1</a>");
             }
             
             if (user > 0) {
