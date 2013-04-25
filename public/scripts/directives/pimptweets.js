@@ -1,13 +1,21 @@
 (function () {
     app.directive('ngPimpTweet', function () {
         return function (scope, elems, attrs) {
-            var links = parseFloat(attrs.links),
+            console.log(scope);
+            console.log(elems);
+
+            var tweet = elems[0].innerHTML,
+                links = parseFloat(attrs.links),
                 user = parseFloat(attrs.user_mentions),
                 symbols = parseFloat(attrs.symbols),
                 hashtags = parseFloat(attrs.hashtags);
+
+            console.log(tweet);
             
             if (links > 0) {
                 console.log('links: ' + links);
+                var link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+                tweet = tweet.replace(link_exp,"<a href='$1' target='_blank'>$1</a>");
             }
             
             if (user > 0) {
