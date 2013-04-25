@@ -13,10 +13,6 @@
             $scope.$digest('tweets');
         };
 
-        $scope.$watch('tweets', function () {
-            console.log('tt');
-        });
-
         $rootScope.$on('new-tweet', function (event, data) {
             if (data.friends) {
                 $scope.friends = data.friends;
