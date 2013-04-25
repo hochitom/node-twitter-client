@@ -13,7 +13,6 @@
             console.log(tweet);
             
             if (links > 0) {
-                console.log('links: ' + links);
                 var link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
                 scope.tweet.text = tweet.replace(link_exp,"<a href='$1' target='_blank'>$1</a>");
             }
@@ -23,7 +22,8 @@
             }
             
             if (hashtags > 0) {
-                console.log('hashtags: ' + hashtags);
+                var hashtag_exp = /#([a-zA-Z0-9]+)/g;
+                scope.tweet.text = tweet.replace(hashtag_exp,"<a href='https://twitter.com/search?q=$1&src=hash' target='_blank'>#$1</a>");
             }
             
             if (symbols > 0) {
