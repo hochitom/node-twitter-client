@@ -25,7 +25,8 @@
             }
             
             if (symbols > 0) {
-                console.log('symbols: ' + symbols);
+                var ctag_exp = /$([a-zA-Z0-9]+)/g;
+                scope.tweet.text = scope.tweet.text.replace(ctag_exp,"<a href='https://twitter.com/search?q=$1&src=ctag' target='_blank'>#$1</a>");
             }
         };
     });
