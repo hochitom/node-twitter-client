@@ -1,11 +1,11 @@
 (function () {
     app.directive('ngPimpTweet', function () {
         return function (scope, elems, attrs) {
-            console.log(scope);
-            console.log(elems);
+            //console.log(scope);
+            //console.log(elems);
 
             var links = parseFloat(attrs.links),
-                user = parseFloat(attrs.user_mentions),
+                user = parseFloat(attrs.user),
                 symbols = parseFloat(attrs.symbols),
                 hashtags = parseFloat(attrs.hashtags);
             
