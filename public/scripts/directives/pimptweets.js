@@ -1,17 +1,24 @@
 (function () {
     app.directive('ngPimpTweet', function () {
         return function (scope, elems, attrs) {
-            //console.log(scope);
-            //console.log(elems);
+            console.log(scope);
+            console.log(elems);
 
-            var links = parseFloat(attrs.links),
+            var links = scope.tweet.entities.urls,
                 user = parseFloat(attrs.user),
                 symbols = parseFloat(attrs.symbols),
                 hashtags = parseFloat(attrs.hashtags);
+
+                console.log(links);
             
-            if (links > 0) {
-                var link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-                scope.tweet.text = scope.tweet.text.replace(link_exp,"<a href='$1' target='_blank'>$1</a>");
+            if (links.length > 0) {
+                for (var linksI = 0; linksI < links.length; linksI++) {
+                    console.log(links[linksI].url);
+                    var newLink = '<a href="' + links[linksI].expanded_url +'" target="_blank">' + links[linksI].display_url +'</a>'
+                    scope.tweet.text = scope.tweet.text.replace(links[linksI].url, newLink);
+                }
+                /*var link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+                scope.tweet.text = scope.tweet.text.replace(link_exp,"<a href='$1' target='_blank'>$1</a>");*/
             }
             
             if (user > 0) {
