@@ -5,20 +5,26 @@
             console.log(elems);
 
             var links = scope.tweet.entities.urls,
+                media = scope.tweet.entities.media,
                 user = parseFloat(attrs.user),
                 symbols = parseFloat(attrs.symbols),
                 hashtags = parseFloat(attrs.hashtags);
 
-                console.log(links);
+            console.log(media);
             
             if (links.length > 0) {
                 for (var linksI = 0; linksI < links.length; linksI++) {
-                    console.log(links[linksI].url);
                     var newLink = '<a href="' + links[linksI].expanded_url +'" target="_blank">' + links[linksI].display_url +'</a>'
                     scope.tweet.text = scope.tweet.text.replace(links[linksI].url, newLink);
                 }
-                /*var link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-                scope.tweet.text = scope.tweet.text.replace(link_exp,"<a href='$1' target='_blank'>$1</a>");*/
+            }
+            
+            if (media && media.length > 0) {
+                for (var mediaI = 0; mediaI < media.length; mediaI++) {
+                    console.log(media[mediaI]);
+                    var newLink = '<a href="' + media[mediaI].expanded_url +'" target="_blank">' + media[mediaI].display_url +'</a>'
+                    scope.tweet.text = scope.tweet.text.replace(media[mediaI].url, newLink);
+                }
             }
             
             if (user > 0) {
