@@ -7,6 +7,6 @@ module.exports = {
     },
 
     db : {
-        url : 'mongodb://localhost/database'
+        url : 'mongodb://twitter:twitteristcool@ds051007.mongolab.com:51007/twitter-client'
     }
 };

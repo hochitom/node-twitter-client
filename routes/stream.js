@@ -61,7 +61,7 @@ module.exports = function(app) {
                 access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
 
             oa = auth();
-            oa.get("http://api.twitter.com/1/statuses/home_timeline.json?include_entities=true", access_token, access_token_secret, function(error, data) {
+            oa.get("http://api.twitter.com/1.1/statuses/home_timeline.json?include_entities=true", access_token, access_token_secret, function(error, data) {
                 res.setHeader("Content-Type", "text/json");
                 res.send(data);
             });
