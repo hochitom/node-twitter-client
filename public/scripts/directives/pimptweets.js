@@ -1,16 +1,14 @@
 (function () {
     app.directive('ngPimpTweet', function () {
         return function (scope, elems, attrs) {
-            console.log(scope);
-            console.log(elems);
+            //console.log(scope);
+            //console.log(elems);
 
             var links = scope.tweet.entities.urls,
                 media = scope.tweet.entities.media,
                 user = parseFloat(attrs.user),
                 symbols = parseFloat(attrs.symbols),
                 hashtags = parseFloat(attrs.hashtags);
-
-            console.log(media);
             
             if (links.length > 0) {
                 for (var linksI = 0; linksI < links.length; linksI++) {
@@ -21,7 +19,6 @@
             
             if (media && media.length > 0) {
                 for (var mediaI = 0; mediaI < media.length; mediaI++) {
-                    console.log(media[mediaI]);
                     var newLink = '<a href="' + media[mediaI].expanded_url +'" target="_blank">' + media[mediaI].display_url +'</a>'
                     scope.tweet.text = scope.tweet.text.replace(media[mediaI].url, newLink);
                 }
