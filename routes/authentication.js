@@ -45,6 +45,7 @@ module.exports = function(app) {
     app.get('/auth', function(req, res) {
         if (req.session.hasOwnProperty('callmade')) {
             var oa = makeOAuth();
+            req.session.oa = oa;
 
             oa.getOAuthAccessToken(
                 req.session.oAuthVars.oauth_token,
@@ -61,6 +62,8 @@ module.exports = function(app) {
                 req.session.oAuthVars.oauth_access_token = oauth_access_token;
                 req.session.oAuthVars.oauth_access_token_secret = oauth_access_token_secret;
                 req.session.oAuthVars.oauth_verifier = req.param('oauth_verifier');
+
+
                 
                 //console.log(req.session.oAuthVars);
 

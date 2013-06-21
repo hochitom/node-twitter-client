@@ -1,4 +1,4 @@
-var socket = io.connect('http://127.0.0.1:3001');
+/*var socket = io.connect('http://127.0.0.1:3001');
 
 socket.emit('tweet');
 
@@ -8,7 +8,7 @@ socket.on('new-tweet', function (msg) {
 
     var tweet = msg.text;
 
-    /*function grabLink(link) {
+    function grabLink(link) {
         var link;
 
         if (msg.entities.urls.length > 0) {
@@ -17,7 +17,7 @@ socket.on('new-tweet', function (msg) {
         }
 
         return link;
-    }*/
+    }
 
     var link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     tweet = tweet.replace(link_exp,"<a href='$1' target='_blank'>$1</a>");
@@ -47,7 +47,7 @@ socket.on('new-tweet', function (msg) {
     var item_height = $('#stream').find('li').eq(0).height();
     position += item_height + 20;
     window.scroll(0, position);
-});
+});*/
 
 $('#tweeting').on('submit', function(data) {
     $.post('/tweet', {msg: $('#tweet').val(), in_reply_to_status_id: $('#reply_to').val()}, function(data){
@@ -72,7 +72,7 @@ $(document).ready(function(){
     });
 });
 
-$('#stream')
+/*$('#stream')
     .on('click', 'li', function(){
         last_read = parseFloat($(this).attr('id'));
     })
@@ -97,4 +97,4 @@ $('#stream')
         $.post('/fav', {id: id}, function(data) {
             console.log(data);
         });
-    });
+    });*/

@@ -17,6 +17,8 @@ function auth () {
     );
 }
 
+
+
 module.exports = function(app) {
 
     app.io.route('tweet', function(req) {
@@ -60,7 +62,7 @@ module.exports = function(app) {
             var access_token = req.session.oAuthVars.oauth_access_token,
                 access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
 
-            oa = auth();
+            var oa = auth();
             oa.get("http://api.twitter.com/1.1/statuses/home_timeline.json?include_entities=true", access_token, access_token_secret, function(error, data) {
                 res.setHeader("Content-Type", "text/json");
                 res.send(data);
@@ -76,8 +78,8 @@ module.exports = function(app) {
         if (req.body.msg) params.status = req.body.msg;
         if (req.body.in_reply_to_status_id) params.in_reply_to_status_id = parseFloat(req.body.in_reply_to_status_id);
 
-        oa = auth();
-        oa.post('http://api.twitter.com/1/statuses/update.json', access_token, access_token_secret, params, function(err, data){
+        var oa = auth();
+        oa.post('http://api.twitter.com/1.1/statuses/update.json', access_token, access_token_secret, params, function(err, data){
             if (err) {
                 console.error(err);
                 res.send(503);
@@ -87,16 +89,20 @@ module.exports = function(app) {
     });
 
     app.post('/retweet', function(req, res) {
+        
         var access_token = req.session.oAuthVars.oauth_access_token,
             access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
 
-        oa = auth();
-        oa.post('https://api.twitter.com/1.1/statuses/retweet/' + req.body.id + '.json', access_token, access_token_secret, {id: parseFloat(req.body.id)}, function(err, data) {
+        var oa = auth();
+        console.log(auth());
+        oa.post('https://api.twitter.com/1.1/statuses/retweet/' + req.body.id + '.json', access_token, access_token_secret, req.body.id, function(err, data) {
+            
             if (err) {
                 console.error(err);
-                res.send(503);
+                res.send(err.statusCode);
                 res.end();
             }
+
             console.log(data);
             res.send(200);
         });
@@ -105,13 +111,9 @@ module.exports = function(app) {
     app.post('/fav', function(req, res) {
         var access_token = req.session.oAuthVars.oauth_access_token,
             access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
-
-        var params = {
-            id: req.body.id
-        };
         
-        oa = auth();
-        oa.post('https://api.twitter.com/1.1/favorites/create.json', access_token, access_token_secret, params, function(err, data) {
+        var oa = auth();
+        oa.post('https://api.twitter.com/1.1/favorites/create.json', access_token, access_token_secret, req.body, function(err, data) {
             if (err) {
                 console.error(err);
                 res.send(err.statusCode);

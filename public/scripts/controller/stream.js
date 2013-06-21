@@ -9,7 +9,7 @@
             });
 
         $scope.addTweet = function (data) {
-            $scope.tweets.push(data);
+            $scope.tweets.unshift(data);
             $scope.$digest('tweets');
         };
 
