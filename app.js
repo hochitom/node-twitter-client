@@ -43,7 +43,7 @@ app.configure(function(){
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
-mongoose.connect(config.db.url);
+//mongoose.connect(config.db.url);
 
 require('./helpers')(app);
 require('./routes')(app);
