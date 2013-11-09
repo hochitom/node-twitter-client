@@ -1,5 +1,5 @@
 module.exports = {
-	address : '88.198.32.98',
+	address : '0.0.0.0',
     port : 3001
 };
 
