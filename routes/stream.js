@@ -5,16 +5,17 @@ var express = require('express.io'),
     config = require('../config'),
     mapper = require('../lib/model-mapper');
 
-function auth () {
-    return new OAuth(
-        "https://twitter.com/oauth/request_token",
-        "https://twitter.com/oauth/access_token", 
+function auth() {
+    //twitter oAuth.
+    var oa = new OAuth(
+        'https://api.twitter.com/oauth/request_token',
+        'https://api.twitter.com/oauth/access_token',
         config.twitteroAuth.key,
-        config.twitteroAuth.secret, 
-        "1.0A",
-        "http://localhost:3000/",
-        "HMAC-SHA1"
-    );
+        config.twitteroAuth.secret,
+        '1.0',
+        null,
+        'HMAC-SHA1');
+    return oa;
 }
 
 
@@ -93,17 +94,18 @@ module.exports = function(app) {
         var access_token = req.session.oAuthVars.oauth_access_token,
             access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
 
+        var params = {
+            id: req.body.id
+        };
+
         var oa = auth();
-        console.log(auth());
-        oa.post('https://api.twitter.com/1.1/statuses/retweet/' + req.body.id + '.json', access_token, access_token_secret, req.body.id, function(err, data) {
+        oa.post('http://api.twitter.com/1.1/statuses/retweet/' + params.id + '.json', access_token, access_token_secret, params, function(err, data) {
+            console.log(err);
             
             if (err) {
-                console.error(err);
-                res.send(err.statusCode);
-                res.end();
+                res.send(404);
             }
 
-            console.log(data);
             res.send(200);
         });
     });
@@ -113,7 +115,7 @@ module.exports = function(app) {
             access_token_secret = req.session.oAuthVars.oauth_access_token_secret;
         
         var oa = auth();
-        oa.post('https://api.twitter.com/1.1/favorites/create.json', access_token, access_token_secret, req.body, function(err, data) {
+        oa.post('http://api.twitter.com/1.1/favorites/create.json', access_token, access_token_secret, req.body, function(err, data) {
             if (err) {
                 console.error(err);
                 res.send(err.statusCode);
